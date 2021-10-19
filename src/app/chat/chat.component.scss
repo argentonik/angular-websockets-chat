@@ -1,0 +1,50 @@
+:host {
+  ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content {
+    flex-direction: column;
+    align-items: normal;
+  }
+}
+
+.chat-container {
+  width: 700px;
+  margin: 20px;
+
+  mat-card-content, mat-card-actions {
+    margin: 0 15px;
+  }
+
+  .chat {
+    min-height: 400px;
+
+    .messages {
+      .message {
+        width: 80%;
+        color: #424242;
+        flex-direction: column;
+        background: #f8fcff;
+        border-radius: 5px;
+        margin: 5px 0;
+        padding: 5px;
+
+        &__header {
+          color: #262626;
+          display: flex;
+          justify-content: space-between;
+          font-size: 12px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .send-message {
+    display: grid;
+    grid-template-columns: 1fr 0.2fr;
+    grid-gap: 10px;
+
+    input {
+      border: 1px solid #d3d3d3;
+      border-radius: 3px;
+    }
+  }
+}
