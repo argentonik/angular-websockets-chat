@@ -4,30 +4,21 @@
   </mat-card-header>
   <mat-card-content class="chat">
     <mat-list role="messages" class="messages">
-      <mat-list-item role="message" class="message">
+      <mat-list-item role="message" class="message" *ngFor="let message of messages">
         <div class="message__header">
           <span class="username">Username</span>
           <span class="date">12:12</span>
         </div>
         <div class="message__body">
-          Pepper
-        </div>
-      </mat-list-item>
-      <mat-list-item role="message" class="message">
-        <div class="message__header">
-          <span class="username">Username</span>
-          <span class="date">12:12</span>
-        </div>
-        <div class="message__body">
-          Pepper
+          {{ message.text }}
         </div>
       </mat-list-item>
     </mat-list>
   </mat-card-content>
   <mat-card-actions>
-    <form class="send-message">
-      <input type="text" />
-      <button mat-flat-button color="primary">Send</button>
+    <form class="send-message" [formGroup]="message">
+      <input type="text" formControlName="text" />
+      <button mat-flat-button color="primary" (click)="sendMessage($event)">Send</button>
     </form>
   </mat-card-actions>
 </mat-card>
