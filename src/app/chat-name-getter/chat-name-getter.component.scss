@@ -1,0 +1,22 @@
+:host {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.chat-name-getter-container {
+  margin-top: 20px;
+  width: 400px;
+
+  mat-card-content, mat-card-actions {
+    margin: 0 15px;
+  }
+
+  .start-chatting {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 0.35fr;
+    grid-gap: 10px;
+  }
+}

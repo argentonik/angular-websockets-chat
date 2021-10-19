@@ -26,9 +26,10 @@ export class ChatService {
 
   constructor() {}
 
-  public connect() {
+  public connect(username: string) {
     console.log('generate websocket connection');
-    this.socket = new WebSocket(`${this.url}?name=userName`);
+    this.socket = new WebSocket(`${this.url}?username=${username}`);
+    this.messages$ = this._messages.asObservable();
 
     this.socket.onmessage = (res: MessageEvent<string>) => {
       const message: IMessage = JSON.parse(res.data);

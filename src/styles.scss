@@ -1,8 +1,16 @@
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 14px; color: gray; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  color: gray;
+  background: #fbfcff;
+}
 
 input {
   outline:none;
   padding: 10px;
   font-size: 14px;
+  border: 1px solid #d3d3d3;
+  border-radius: 3px;
 }

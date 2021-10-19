@@ -1,0 +1,16 @@
+<mat-card class="chat-name-getter-container">
+  <mat-card-header>
+    <mat-card-title>Welcome to Chat!</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    Please enter your name:
+  </mat-card-content>
+  <mat-card-actions>
+    <form class="start-chatting" [formGroup]="form">
+      <input type="text" formControlName="username" />
+      <a [routerLink]="['/chat', form.value.username]">
+        <button mat-flat-button color="primary" (click)="goToChat()" [disabled]="form.invalid">Start</button>
+      </a>
+    </form>
+  </mat-card-actions>
+</mat-card>
