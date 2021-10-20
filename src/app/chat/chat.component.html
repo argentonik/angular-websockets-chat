@@ -7,7 +7,7 @@
       <mat-list-item class="message" *ngFor="let message of messages">
         <div class="message__header">
           <span class="username">{{message.username}}</span>
-          <span class="date">12:12</span>
+          <span class="date">{{message.dateTime}}</span>
         </div>
         <div class="message__body">
           {{ message.text }}

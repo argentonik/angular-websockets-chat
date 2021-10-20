@@ -79,6 +79,9 @@
               "browserTarget": "angular-websockets-chat:build:development"
             }
           },
+          "options": {
+            "disableHostCheck": true
+          },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {

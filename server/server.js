@@ -2,6 +2,7 @@ import {WebSocketServer} from 'ws';
 import url, {fileURLToPath} from 'url';
 import {existsSync, readFileSync, writeFile} from "fs";
 import * as path from "path";
+import moment from "moment";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,8 +27,8 @@ wsServer.on('connection', (ws, req) => {
   ws.on('message', (data) => {
     const {text} = parseJson(data);
     if (text) {
-      const message = wsServer.prepareMessage({username, text});
-      messages.push({username, text});
+      const message = wsServer.prepareMessage({username, text, dateTime: getDateTime()});
+      messages.push({username, text, dateTime: getDateTime()});
       wsServer.broadcastAll(message);
     }
   });
@@ -54,7 +55,8 @@ wsServer.broadcastAllExcept = (msg, sender) => {
 wsServer.userJoinedChatNotification = function(username, client) {
   const message = this.prepareMessage({
     username: this.chatBotName,
-    text: `${username} joined chat`
+    text: `${username} joined chat`,
+    dateTime: getDateTime(),
   });
 
   if (message) {
@@ -65,7 +67,8 @@ wsServer.userJoinedChatNotification = function(username, client) {
 wsServer.userLeftChatNotification = function(username) {
   const message = this.prepareMessage({
     username: this.chatBotName,
-    text: `${username} left chat`
+    text: `${username} left chat`,
+    dateTime: getDateTime(),
   });
 
   if (message) {
@@ -87,6 +90,10 @@ function parseJson(data) {
   } catch {
     return null;
   }
+}
+
+function getDateTime() {
+  return moment().format('HH:mm  DD.MM.YY');
 }
 
 process.on('SIGINT', () => {
