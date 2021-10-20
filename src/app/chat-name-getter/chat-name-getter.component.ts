@@ -16,8 +16,4 @@ export class ChatNameGetterComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  public goToChat() {
-    this.router.navigateByUrl('/chat/Glep');
-  }
 }

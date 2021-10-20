@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, EMPTY, Observable} from "rxjs";
 import IMessage from "../interfaces/message.interface";
 
 @Injectable({
@@ -9,8 +9,8 @@ export class ChatService {
   private static _URL = 'ws://localhost:3000';
   private socket: WebSocket;
 
-  private _messages: BehaviorSubject<IMessage[]> = new BehaviorSubject<IMessage[]>([]);
-  public messages$: Observable<IMessage[]> = this._messages.asObservable();
+  private _messages: BehaviorSubject<IMessage[]>;
+  public messages$: Observable<IMessage[]>;
 
   private get url(): string {
     return ChatService._URL;
@@ -27,15 +27,20 @@ export class ChatService {
   constructor() {}
 
   public connect(username: string) {
-    console.log('generate websocket connection');
-    this.socket = new WebSocket(`${this.url}?username=${username}`);
+    this._messages = new BehaviorSubject<IMessage[]>([]);
     this.messages$ = this._messages.asObservable();
+    this.socket = new WebSocket(`${this.url}?username=${username}`);
 
     this.socket.onmessage = (res: MessageEvent<string>) => {
       const message: IMessage = JSON.parse(res.data);
       this.messages = this.messages.concat(message);
     }
   }
+
+  public disconnect() {
+    this.socket.close(1000, 'User lived chat');
+  }
+
 
   public sendMessage(message: string): void {
     this.socket.send(JSON.stringify({text: message}));

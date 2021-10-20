@@ -9,7 +9,7 @@
     <form class="start-chatting" [formGroup]="form">
       <input type="text" formControlName="username" />
       <a [routerLink]="['/chat', form.value.username]">
-        <button mat-flat-button color="primary" (click)="goToChat()" [disabled]="form.invalid">Start</button>
+        <button mat-flat-button color="primary" [disabled]="form.invalid">Start</button>
       </a>
     </form>
   </mat-card-actions>

@@ -18,8 +18,13 @@
     margin: 0 15px;
   }
 
+  mat-card-content {
+    overflow: auto;
+  }
+
   .chat {
     min-height: 400px;
+    max-height: 400px;
 
     .messages {
       .message {
