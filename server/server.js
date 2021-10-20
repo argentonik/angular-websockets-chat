@@ -1,29 +1,39 @@
-import WebSocket, { WebSocketServer } from 'ws';
-import url from 'url';
+import {WebSocketServer} from 'ws';
+import url, {fileURLToPath} from 'url';
+import {existsSync, readFileSync, writeFile} from "fs";
+import * as path from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const wsServer = new WebSocketServer({
   port: 3000,
   clientTracking: true,
 });
-const chatBotName = 'Chat Bot';
+wsServer.chatBotName = 'Chat Bot';
+
+const log = existsSync(path.join(__dirname, `log`)) && readFileSync(path.join(__dirname, `log`));
+const messages = parseJson(log) || [];
 
 wsServer.on('connection', (ws, req) => {
   const username = url.parse(req.url, true)?.query?.username;
-  wsServer.broadcastAllExcept(JSON.stringify({
-    username: chatBotName,
-    text: `${username} joined chat`
-  }), ws);
+
+  wsServer.userJoinedChatNotification(username, ws);
+  if (messages.length) {
+    ws.send(JSON.stringify(messages));
+  }
 
   ws.on('message', (data) => {
-    const {text} = JSON.parse(data);
-    wsServer.broadcastAll(JSON.stringify({username, text}));
+    const {text} = parseJson(data);
+    if (text) {
+      const message = wsServer.prepareMessage({username, text});
+      messages.push({username, text});
+      wsServer.broadcastAll(message);
+    }
   });
 
   ws.on('close', () => {
-    wsServer.broadcastAll(JSON.stringify({
-      username: chatBotName,
-      text: `${username} leaved chat`
-    }))
+    wsServer.userLeftChatNotification(username);
   });
 });
 
@@ -40,3 +50,51 @@ wsServer.broadcastAllExcept = (msg, sender) => {
     }
   });
 };
+
+wsServer.userJoinedChatNotification = function(username, client) {
+  const message = this.prepareMessage({
+    username: this.chatBotName,
+    text: `${username} joined chat`
+  });
+
+  if (message) {
+    this.broadcastAllExcept(message, client);
+  }
+}
+
+wsServer.userLeftChatNotification = function(username) {
+  const message = this.prepareMessage({
+    username: this.chatBotName,
+    text: `${username} left chat`
+  });
+
+  if (message) {
+    this.broadcastAll(message);
+  }
+}
+
+wsServer.prepareMessage = function(message) {
+  try {
+    return JSON.stringify(message);
+  } catch {
+    return null;
+  }
+}
+
+function parseJson(data) {
+  try {
+    return JSON.parse(data);
+  } catch {
+    return null;
+  }
+}
+
+process.on('SIGINT', () => {
+  wsServer.close();
+  writeFile(path.join(__dirname, `log`), JSON.stringify(messages), err => {
+    if (err) {
+      console.log('err');
+    }
+    process.exit();
+  });
+});
