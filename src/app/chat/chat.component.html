@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>Chat</mat-card-title>
   </mat-card-header>
-  <mat-card-content class="chat">
+  <mat-card-content class="chat" #chatContainer>
     <mat-list class="messages">
       <mat-list-item class="message" *ngFor="let message of messages">
         <div class="message__header">
