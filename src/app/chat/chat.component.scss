@@ -1,8 +1,5 @@
 :host {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  margin: auto 0;
 
   ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content {
     flex-direction: column;

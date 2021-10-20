@@ -1,12 +1,9 @@
 :host {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  margin: auto 0;
 }
 
 .chat-name-getter-container {
-  margin-top: 20px;
+  margin-top: -30px;
   width: 400px;
 
   mat-card-content, mat-card-actions {
